@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AirPhone resource utilization dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta content="text/html; charset=iso-8859-2" http-equiv="Content-Type">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+   
+  <!--CSS Applied-->   
+  <style>
+  .light-red {
+  background-color: #ffcccc;
+}
+
+.light-yellow {
+  background-color: #ffffcc;
+}
+
+    .max-disk-utilization {
+    background-color: lightred;
+  }
+    @keyframes blink {
+    0% {
+      visibility: visible;
+    }
+    50% {
+      visibility: hidden;
+    }
+  }
+
+  .blink-text {
+    animation: blink 1s infinite;
+  }
+  #news-module {
+    background-color: #E6F4E6;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  #news-module2 {
+    background-color: #E6F4E6;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  #news-container {
+    color: #fff;
+  }
+
+  .news-article {
+    margin-bottom: 20px;
+  }
+
+  .news-article h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .news-article p {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .news-article a {
+    color: #fff;
+    text-decoration: underline;
+  }
+
+
+
+
+     .total-mount {
+          background-color: lightblue;
+        }
+
+     table {
+     font-family: arial, sans-serif;
+     border-collapse: collapse;
+     width: 100%;
+     }
+
+     td, th {
+     border: 2px solid #dddddd;
+     text-align: left;
+     padding: 8px;
+     }
+
+     tr:nth-child(even) {
+     background-color: ;
+     }
+        
+     /* Three image containers (use 25% for four, and 50% for two, etc) */
+     .column {
+      float: left;
+      width: 33.33%;
+      padding: 5px;
+     }
+
+     /* Clear floats after image containers */
+     .row::after {
+      content: "";
+      clear: both;
+      display: table;
+     }
+    
+     .mySlides {display:none;}
+
+     table {
+     font-family: arial, sans-serif;
+     border-collapse: collapse;
+     width: 100%;
+     }
+
+     td, th {
+     border: 2px solid #dddddd;
+     text-align: left;
+     padding: 8px;
+     }
+
+     tr:nth-child(even) {
+     background-color: ;
+     }
+  </style>
+</head>
+<body>
+
+<!--Body of html start's from here!!-->
+
+<!--Navigation Bar with Nokia logo on left hand side-->
+
+<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <img src="nokia.jpg" width="70" height="28">
+      </li>
+      <li class="nav-item">
+        <center><a class="nav-link active" href="#"><h7>AirPhone resource utilization dashboard</h7></a></center>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="menu-dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-ellipsis-v"></i> <!-- Use the appropriate icon class here -->
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menu-dropdown">
+          <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#login-modal">Admin Login</a></li>
+          <li><a class="dropdown-item" href="#">Item 2</a></li>
+          <li><a class="dropdown-item" href="#">Item 3</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="login-modal-label">Admin Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="login-form">
+          <h3>Admin login</h3>
+          <input type="text" id="username-input" placeholder="Username">
+          <input type="password" id="password-input" placeholder="Password">
+          <button id="login-button">Login</button>
+          <div id="login-message" class="alert" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("login-button").addEventListener("click", function() {
+    // Simulating login validation
+    // Replace this code with your actual login verification logic
+    var username = document.getElementById("username-input").value;
+    var password = document.getElementById("password-input").value;
+    if (username === "admin" && password === "password") {
+      // Show success message
+      var successMessage = document.getElementById("login-message");
+      successMessage.className = "alert alert-success";
+      successMessage.innerHTML = "Successfully logged in!";
+      successMessage.style.display = "block";
+
+      // Close the modal after 9 seconds
+      setTimeout(function() {
+        var modal = bootstrap.Modal.getInstance(document.getElementById("login-modal"));
+        modal.hide();
+        successMessage.style.display = "none";
+      }, 9000);
+    } else {
+      // Show invalid message
+      var invalidMessage = document.getElementById("login-message");
+      invalidMessage.className = "alert alert-danger";
+      invalidMessage.innerHTML = "Invalid username or password!";
+      invalidMessage.style.display = "block";
+    }
+  });
+</script>
+
+
+
+<!--Running text from right to left with marquee-->
+
+<marquee><h5><img src="NEW.gif" width="57" height="57">Welcome to the Disk Space Webpage! Please note that this web-tool is currently under construction. We apologize for any inconvenience and appreciate your patience as we work to improve the tool...</h5></marquee>
+
+<!--Marquee tag Ending..-->
+
+<!--Title With Dashboard Tool-->
+<center>
+
+<div> 
+     <p>Please select the below options :</p>
+
+
+<div style="display: flex; justify-content: center;">
+
+<center>
+<div style="display: flex; justify-content: center; margin-bottom: 10px;">
+  <!-- User allocation button -->
+   <div style="margin-right: 10px;">
+    <center>
+      <label for="server"><p><span style="color:red">in progress:</span></p></label><br>
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('id08').style.display='block'">User allocation</button>
+        <div id="id08" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id08').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <br>
+        <br>
+        <p>Development Server Usage - AP L1</p>
+         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+     <ul class="navbar-nav">
+     <li class="nav-item">
+     <center><a class="nav-link active" href="#">User allocation</a></center>
+     </li>
+     </ul>
+</div>
+     </nav>
+
+<h6><b>Physical Servers:</b></h6>
+
+<table>
+     <tr>
+     <th>Server</th>
+     <th>IP</th>
+     <th>users</th>
+     <th>Remarks</th>
+     <th>Line Manager/Team</th>
+     <th>Count</th>
+     <th>Storage</th>
+     <th>Additional/External Storage</th>
+     <th>Memory</th>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+     <tr>
+     <td>Bhling26</td>
+     <td>10.159.236.69</td>
+     <td> No user</td>
+     <td></td>
+     <td>Paramshiv S
+
+
+
+Suggestion
+
+Increase memory for this server by 3 TB & Param to move here
+
+Requested for additional storage , not usable currently 
+
+Shrimathi to move to other server - Shrimathi is not using this server</td>
+     <td>2</td>
+     <td>360 GB</td>
+     <td></td>
+     <td>192 GB</td>
+     </tr>
+</table>
+
+      </div>
+    </div>
+  </div>
+    </center>
+  </div>
+
+
+  <!-- CPU & Mem button -->
+  <div style="margin-right: 10px;">
+    <center>
+      <label for="server"><p>CPU & memory:</p></label><br>
+      <button type="button" class="btn btn-primary" onclick="openServerReport()">CPU & Mem</button>
+
+<script>
+function openServerReport() {
+  window.location.href = "http://10.159.236.5/webDev/AP1/server_report_2023-04-27_0110.html";
+}
+</script>
+
+        <div id="id07" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id07').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <br>
+        <br>
+
+
+<br>
+<center><h6>
+</center>
+<br>
+
+      </div>
+    </div>
+  </div>
+    </center>
+  </div>
+  
+  <!-- CPU & Mem button -->
+  <div style="margin-right: 10px;">
+    <center>
+      <label for="server"><p>Server Utilization report :</p></label><br>
+      <button type="button" class="btn btn-primary" onclick="openServerReports()">Server Utilization report </button>
+
+<script>
+function openServerReports() {
+  window.location.href = "http://10.159.236.5/webDev/AP1/test/report.html";
+}
+</script>
+
+        <div id="id07" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id07').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <br>
+        <br>
+
+
+<br>
+<center><h6>
+</center>
+<br>
+
+      </div>
+    </div>
+  </div>
+    </center>
+  </div>
+
+  <!-- Additional User allocation button -->
+  <div style="margin-right: 10px;">
+    <center>
+           <label for="server"><p>Choose a server :</p></label>
+<div class="dropdown">
+
+<!--Dropdown button start's from here!!-->
+
+     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+      Dropdown Server List
+     </button>
+     <ul class="dropdown-menu">
+<div class="w3-container">
+     <li><a class="dropdown-item" class="w3-bar-item w3-button" onclick="document.getElementById('modal1').style.display='block'">bhling119.apac.nsn-net.net</a></li>
+     <li><a class="dropdown-item" class="w3-bar-item w3-button" onclick="document.getElementById('modal2').style.display='block'">bhling118.apac.nsn-net.net</a></li>
+     <li><a class="dropdown-item" class="w3-bar-item w3-button" onclick="document.getElementById('modal3').style.display='block'">bhling103.apac.nsn-net.net</a></li>
+     <li><a class="dropdown-item" class="w3-bar-item w3-button" onclick="document.getElementById('modal4').style.display='block'">bhling105.apac.nsn-net.net</a></li>
+     <li><a class="dropdown-item" class="w3-bar-item w3-button" onclick="document.getElementById('modal5').style.display='block'">bhling106.apac.nsn-net.net</a></li>
+     <li><a class="dropdown-item" class="w3-bar-item w3-button" onclick="document.getElementById('modal6').style.display='block'">bhling49.apac.nsn-net.net</a></li>
+     </ul>
+
+
+<!-- Modal 1 -->
+
+<div id="modal1" class="w3-modal">
+<div class="w3-modal-content">
+<div class="w3-container">
+     <span onclick="document.getElementById('modal1').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+     <br>
+     <br>
+     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+     <ul class="navbar-nav">
+     <li class="nav-item">
+     <center><a class="nav-link active" href="bhlinv15.html">bhling119.apac.nsn-net.net</a></center>
+     </li>
+     </ul>
+</div>
+     </nav>
+     <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+const tableBody = document.querySelector('#table-body');
+
+fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling119')
+  .then(response => response.json())
+  .then(data => {
+    console.log('data', data);
+    if (Array.isArray(data)) {
+      // Separate data with mount="total" and other mounts
+      const totalMount = data.find(jsonData => jsonData.mount === "total");
+      const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+      // Sort the other mounts data by date and time in descending order
+      otherMounts.sort((a, b) => {
+        const dateA = new Date(a.fs);
+        const dateB = new Date(b.fs);
+        if (dateA > dateB) return -1;
+        if (dateA < dateB) return 1;
+        // If the dates are equal, sort by time in descending order
+        const timeA = new Date(`1970-01-01 ${a.size}`);
+        const timeB = new Date(`1970-01-01 ${b.size}`);
+        if (timeA > timeB) return -1;
+        if (timeA < timeB) return 1;
+        return 0;
+      });
+
+      // Combine the data with "total" mount at the end
+      const combinedData = [...otherMounts, totalMount];
+
+      const rows = combinedData.map(jsonData => {
+        // Convert date to dd/mm/yyyy format
+        const date = new Date(jsonData.fs);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+        // Convert time to AM/PM format
+        const time = new Date(`1970-01-01 ${jsonData.size}`);
+        const formattedTime = time.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: true
+        });
+
+        // Apply different CSS class to "total" mount row
+        const rowClass = jsonData.mount === "total" ? "total-mount" : "";
+
+        return `<tr class="${rowClass}">
+                  <td>${formattedDate}</td>
+                  <td>${formattedTime}</td>
+                  <td>${jsonData.percent}</td>
+                  <td>${jsonData.mount}</td>
+                </tr>`;
+      });
+
+      tableBody.innerHTML = rows.join('');
+
+      // Add CSS styles for the "total" mount row
+      const styleElement = document.createElement('style');
+      styleElement.innerHTML = `
+        .total-mount {
+          background-color: lightblue;
+        }
+      `;
+      document.head.appendChild(styleElement);
+
+      // Display current time and date
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      const dateTimeContainer = document.querySelector('#date-time');
+      dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+    } else {
+      console.error('Error: data is not an array');
+    }
+  })
+  .catch(error => console.error('Error message:', error.message));
+
+</script>
+
+
+
+
+     <br>
+     <center><h6><div id="date-time"></div></h6></center>
+     <br>
+</div>
+</div>
+</div>
+<!-- END WITH Modal 1 -->
+
+
+<!-- Modal 2 -->
+<div id="modal2" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+      <span onclick="document.getElementById('modal2').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+      <br>
+      <br>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <center><a class="nav-link active" href="#">bhling118.apac.nsn-net.net</a></center>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+ <table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="new-table-body">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const newTableBody = document.querySelector('#new-table-body');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling118_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        // Sort the data by date and time in descending order
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          // If the dates are equal, sort by time in descending order
+          const timeA = new Date(`1970-01-01 ${a.size}`);
+          const timeB = new Date(`1970-01-01 ${b.size}`);
+          if (timeA > timeB) return -1;
+          if (timeA < timeB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          // Convert date to dd/mm/yyyy format
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          // Convert time to AM/PM format
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          // Convert date to dd/mm/yyyy format for "total" row
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          // Convert time to AM/PM format for "total" row
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          // Add the row for "total" mount at the end
+          const totalRow = `<tr style="background-color: lightblue;">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        newTableBody.innerHTML = rows.join('');
+
+        // Display current time and date
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time1');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+<br>
+<center><h6><div id="date-time1"></div></h6></center>
+<br>
+</div>
+</div>
+</div>
+
+
+
+<!-- END WITH Modal 2 -->
+
+
+<!-- Modal 3 -->
+
+<div id="modal3" class="w3-modal">
+<div class="w3-modal-content">
+<div class="w3-container">
+     <span onclick="document.getElementById('modal3').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+     <br>
+     <br>
+     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+     <ul class="navbar-nav">
+     <li class="nav-item">
+     <center><a class="nav-link active" href="#">bhling103.apac.nsn-net.net</a></center>
+     </li>
+     </ul>
+</div>
+     </nav>
+     <br>
+ <table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="new-table-drak">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const newtabledrak = document.querySelector('#new-table-drak');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling103_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        // Sort the data by date and time in descending order
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          // Convert date to dd/mm/yyyy format
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          // Convert time to AM/PM format
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          // Convert date to dd/mm/yyyy format for "total" row
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          // Convert time to AM/PM format for "total" row
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          // Add the row for "total" mount at the end with light blue background color
+          const totalRow = `<tr style="background-color: lightblue;">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        newtabledrak.innerHTML = rows.join('');
+
+        // Display current time and date
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time2');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+<br>
+<center><h6><div id="date-time2"></div></h6></center>
+<br>
+
+
+</div>
+</div>
+    </center>
+  </div>
+
+  <!-- Modal 4 -->
+<div id="modal4" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+      <span onclick="document.getElementById('modal4').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+      <br>
+      <br>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <center><a class="nav-link active" href="#">bhling105.apac.nsn-net.net</a></center>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+ <table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="new-table-bound">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const newtablebound = document.querySelector('#new-table-bound');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling105_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        // Sort the data by date and time in descending order
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          // Convert date to dd/mm/yyyy format
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          // Convert time to AM/PM format
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          // Convert date to dd/mm/yyyy format for "total" row
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          // Convert time to AM/PM format for "total" row
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          // Add the row for "total" mount at the end with light blue background color
+          const totalRow = `<tr style="background-color: lightblue;">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        newtablebound.innerHTML = rows.join('');
+
+        // Display current time and date
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time3');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+<br>
+<center><h6><div id="date-time3"></div></h6></center>
+<br>
+</div>
+</div>
+</div>
+
+
+ <!-- Modal 5 -->
+<div id="modal5" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+      <span onclick="document.getElementById('modal5').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+      <br>
+      <br>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <center><a class="nav-link active" href="#">bhling106.apac.nsn-net.net</a></center>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+ <table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="new-table-woke">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const newtablewoke = document.querySelector('#new-table-woke');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling106_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        // Sort the data by date and time in descending order
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          // Convert date to dd/mm/yyyy format
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          // Convert time to AM/PM format
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          // Convert date to dd/mm/yyyy format for "total" row
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          // Convert time to AM/PM format for "total" row
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          // Add the row for "total" mount at the end with light blue background color
+          const totalRow = `<tr style="background-color: lightblue;">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        newtablewoke.innerHTML = rows.join('');
+
+        // Display current time and date
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time5');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+<br>
+<center><h6><div id="date-time5"></div></h6></center>
+<br>
+</div>
+</div>
+</div>
+
+ <!-- Modal 6 -->
+<div id="modal6" class="w3-modal">
+  <div class="w3-modal-content">
+    <div class="w3-container">
+      <span onclick="document.getElementById('modal6').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+      <br>
+      <br>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <center><a class="nav-link active" href="#">bhling49.apac.nsn-net.net</a></center>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+ <table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="new-table-yooy">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const newtableyooy = document.querySelector('#new-table-yooy');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling49_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        // Sort the data by date and time in descending order
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        // Find the maximum disk utilization in GB
+        let maxDiskUtilization = 0;
+        otherMounts.forEach(jsonData => {
+          const diskUtilization = parseInt(jsonData.percent);
+          if (diskUtilization > maxDiskUtilization) {
+            maxDiskUtilization = diskUtilization;
+          }
+        });
+
+        const rows = otherMounts.map(jsonData => {
+          // Convert date to dd/mm/yyyy format
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          // Convert time to AM/PM format
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          // Add 'max-disk-utilization' class for maximum disk utilization in GB
+          const diskUtilization = parseInt(jsonData.percent);
+          const isMaxDiskUtilization = diskUtilization === maxDiskUtilization;
+          const diskUtilizationClass = isMaxDiskUtilization ? 'max-disk-utilization' : '';
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td class="${diskUtilizationClass}">${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          // Convert date to dd/mm/yyyy format for "total" row
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          // Convert time to AM/PM format for "total" row
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          // Add 'max-disk-utilization' class for maximum disk utilization in GB in "total" row
+          const totalDiskUtilization = parseInt(totalMount.percent);
+          const isMaxTotalDiskUtilization = totalDiskUtilization === maxDiskUtilization;
+          const totalDiskUtilizationClass = isMaxTotalDiskUtilization ? 'max-disk-utilization' : '';
+
+          // Add the row for "total" mount separately with light blue background color
+          const totalRow = `<tr style="background-color: lightblue;">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td class="${totalDiskUtilizationClass}">${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        newtableyooy.innerHTML = rows.join('');
+
+        // Display current time and date
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time6');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+<style>
+  .max-disk-utilization {
+    background-color: lightred;
+  }
+</style>
+
+
+
+<br>
+<center><h6><div id="date-time6"></div></h6></center>
+<br>
+</div>
+</div>
+</div>
+    
+  <!-- Additional CPU & Mem button -->
+  <div style="margin-right: 10px;">
+    <center>
+          <label for="server"><p>Click to View All Server :</p></label><br>
+    <div class="w3-container">
+    <button type="button" class="btn btn-primary" button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">View All Server</button>
+<div id="id01" class="w3-modal">
+<div class="w3-modal-content">
+<div class="w3-container">
+    <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+<div class="row">
+<div class="column">
+    <br>
+</div>
+</div>
+
+    <h5>-View All Server List For AP1-</h5>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <center><a class="nav-link active" href="">bhling119.apac.nsn-net.net</a></center>
+    </li>
+    </ul>
+</div>
+    </nav>
+    <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body-All">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+const tableBodyallserver = document.querySelector('#table-body-All');
+
+fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling119')
+  .then(response => response.json())
+  .then(data => {
+    console.log('data', data);
+    if (Array.isArray(data)) {
+      // Separate data with mount="total" and other mounts
+      const totalMount = data.find(jsonData => jsonData.mount === "total");
+      const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+      // Sort the other mounts data by date and time in descending order
+      otherMounts.sort((a, b) => {
+        const dateA = new Date(a.fs);
+        const dateB = new Date(b.fs);
+        if (dateA > dateB) return -1;
+        if (dateA < dateB) return 1;
+        // If the dates are equal, sort by time in descending order
+        const timeA = new Date(`1970-01-01 ${a.size}`);
+        const timeB = new Date(`1970-01-01 ${b.size}`);
+        if (timeA > timeB) return -1;
+        if (timeA < timeB) return 1;
+        return 0;
+      });
+
+      // Combine the data with "total" mount at the end
+      const combinedData = [...otherMounts, totalMount];
+
+      const rows = combinedData.map(jsonData => {
+        // Convert date to dd/mm/yyyy format
+        const date = new Date(jsonData.fs);
+        const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+        // Convert time to AM/PM format
+        const time = new Date(`1970-01-01 ${jsonData.size}`);
+        const formattedTime = time.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          hour12: true
+        });
+
+        // Apply different CSS class to "total" mount row
+        const rowClass = jsonData.mount === "total" ? "total-mount" : "";
+
+        return `<tr class="${rowClass}">
+                  <td>${formattedDate}</td>
+                  <td>${formattedTime}</td>
+                  <td>${jsonData.percent}</td>
+                  <td>${jsonData.mount}</td>
+                </tr>`;
+      });
+
+      tableBodyallserver.innerHTML = rows.join('');
+
+      // Add CSS styles for the "total" mount row
+      const styleElement = document.createElement('style');
+      styleElement.innerHTML = `
+        .total-mount {
+          background-color: lightblue;
+        }
+      `;
+      document.head.appendChild(styleElement);
+
+      // Display current time and date
+      const currentDate = new Date();
+      const formattedDate = currentDate.toLocaleString('en-US', {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      const dateTimeContainer = document.querySelector('#date-time20');
+      dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+    } else {
+      console.error('Error: data is not an array');
+    }
+  })
+  .catch(error => console.error('Error message:', error.message));
+
+</script>
+
+
+
+
+     <br>
+     <center><h6><div id="date-time20"></div></h6></center>
+     <br>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <center><a class="nav-link active" href="#">bhling118.apac.nsn-net.net</a></center>
+    </li>
+    </ul>
+</div>
+    </nav>
+    <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body-viewer">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  /* Add this CSS style for the total row */
+  .total-row {
+    background-color: lightblue;
+  }
+</style>
+
+<script>
+  const tableBodyviwers = document.querySelector('#table-body-viewer');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling118_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          const timeA = new Date(`1970-01-01 ${a.size}`);
+          const timeB = new Date(`1970-01-01 ${b.size}`);
+          if (timeA > timeB) return -1;
+          if (timeA < timeB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          const totalRow = `<tr class="total-row">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        tableBodyviwers.innerHTML = rows.join('');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time21');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+
+
+     <br>
+     <center><h6><div id="date-time21"></div></h6></center>
+     <br>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <center><a class="nav-link active" href="#">bhling103.apac.nsn-net.net</a></center>
+    </li>
+    </ul>
+</div>
+    </nav>
+    <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body-v1">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  /* Add this CSS style for the total row */
+  .total-row {
+    background-color: lightblue;
+  }
+</style>
+<script>
+  const tableBodyvv = document.querySelector('#table-body-v1');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling103_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          const totalRow = `<tr class="total-row">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        tableBodyvv.innerHTML = rows.join('');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time22');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+
+     <br>
+     <center><h6><div id="date-time22"></div></h6></center>
+     <br>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <center><a class="nav-link active" href="#">bhling105.apac.nsn-net.net</a></center>
+    </li>
+    </ul>
+</div>
+    </nav>
+    <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body-www">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  /* Add this CSS style for the total row */
+  .total-row {
+    background-color: lightblue;
+  }
+</style>
+
+<script>
+  const tableBodyqq = document.querySelector('#table-body-www');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling105_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          const totalRow = `<tr class="total-row">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        tableBodyqq.innerHTML = rows.join('');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time23');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+
+     <br>
+     <center><h6><div id="date-time23"></div></h6></center>
+     <br>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <center><a class="nav-link active" href="#">bhling106.apac.nsn-net.net</a></center>
+    </li>
+    </ul>
+</div>
+    </nav>
+    <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body-jjj">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  /* Add this CSS style for the total row */
+  .total-row {
+    background-color: lightblue;
+  }
+</style>
+<script>
+  const tableBodyground = document.querySelector('#table-body-jjj');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling106_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        const rows = otherMounts.map(jsonData => {
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td>${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          const totalRow = `<tr class="total-row">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td>${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        tableBodyground.innerHTML = rows.join('');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time24');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+
+
+
+
+     <br>
+     <center><h6><div id="date-time24"></div></h6></center>
+     <br>           
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<div class="container-fluid">
+    <ul class="navbar-nav">
+    <li class="nav-item">
+        <center><a class="nav-link active" href="#">bhling49.apac.nsn-net.net</a></center>
+    </li>
+    </ul>
+</div>
+    </nav>
+    <br>
+<table>
+  <thead>
+    <tr>
+      <th>Last activity date</th>
+      <th>Last access time</th>
+      <th>Disk Utilization</th>
+      <th>Users WorkSpace</th>
+    </tr>
+  </thead>
+  <tbody id="table-body-KKK">
+  </tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+  /* Add this CSS style for the total row */
+  .total-row {
+    background-color: lightblue;
+  }
+</style>
+
+
+<script>
+  const tableBodylabel = document.querySelector('#table-body-KKK');
+
+  fetch('http://localhost:8080/nokia/rest/dashboard/v1/server-details/data/diskspace_htmltable_working_bhling49_new')
+    .then(response => response.json())
+    .then(data => {
+      console.log('data', data);
+      if (Array.isArray(data)) {
+        data.sort((a, b) => {
+          const dateA = new Date(a.fs);
+          const dateB = new Date(b.fs);
+          if (dateA > dateB) return -1;
+          if (dateA < dateB) return 1;
+          return 0;
+        });
+
+        const totalMount = data.find(jsonData => jsonData.mount === "total");
+        const otherMounts = data.filter(jsonData => jsonData.mount !== "total");
+
+        let maxDiskUtilization = 0;
+        otherMounts.forEach(jsonData => {
+          const diskUtilization = parseInt(jsonData.percent);
+          if (diskUtilization > maxDiskUtilization) {
+            maxDiskUtilization = diskUtilization;
+          }
+        });
+
+        const rows = otherMounts.map(jsonData => {
+          const date = new Date(jsonData.fs);
+          const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+          const time = new Date(`1970-01-01 ${jsonData.size}`);
+          const formattedTime = time.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          const diskUtilization = parseInt(jsonData.percent);
+          const isMaxDiskUtilization = diskUtilization === maxDiskUtilization;
+          const diskUtilizationClass = isMaxDiskUtilization ? 'max-disk-utilization' : '';
+
+          return `<tr>
+                    <td>${formattedDate}</td>
+                    <td>${formattedTime}</td>
+                    <td class="${diskUtilizationClass}">${jsonData.percent}</td>
+                    <td>${jsonData.mount}</td>
+                  </tr>`;
+        });
+
+        if (totalMount) {
+          const totalDate = new Date(totalMount.fs);
+          const formattedTotalDate = `${totalDate.getDate()}/${totalDate.getMonth() + 1}/${totalDate.getFullYear()}`;
+
+          const totalTime = new Date(`1970-01-01 ${totalMount.size}`);
+          const formattedTotalTime = totalTime.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          });
+
+          const totalDiskUtilization = parseInt(totalMount.percent);
+          const isMaxTotalDiskUtilization = totalDiskUtilization === maxDiskUtilization;
+          const totalDiskUtilizationClass = isMaxTotalDiskUtilization ? 'max-disk-utilization' : '';
+
+          const totalRow = `<tr class="total-row">
+                              <td>${formattedTotalDate}</td>
+                              <td>${formattedTotalTime}</td>
+                              <td class="${totalDiskUtilizationClass}">${totalMount.percent}</td>
+                              <td>${totalMount.mount}</td>
+                            </tr>`;
+          rows.push(totalRow);
+        }
+
+        tableBodylabel.innerHTML = rows.join('');
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        const dateTimeContainer = document.querySelector('#date-time25');
+        dateTimeContainer.textContent = `Generated at ${formattedDate}`;
+      } else {
+        console.error('Error: data is not an array');
+      }
+    })
+    .catch(error => console.error('Error message:', error.message));
+</script>
+
+
+
+
+     <br>
+     <center><h6><div id="date-time25"></div></h6></center>
+     <br>           
+
+<div class="mt-5 p-4 bg-dark text-white text-center">
+  <p><h6>Back to home page - Please Click On Cancel Button!</h6></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+    </center>
+  </div>
+</div>
+
+<!-- Slider Images code in jS-->
+
+<!-- News Section-->
+<style>
+  .news-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .news-item {
+    margin: 10px;
+    text-align: center;
+  }
+
+  .news-image {
+    max-width: 100%;
+    height: auto;
+  }
+
+  #login-form {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  #login-form input[type="text"],
+  #login-form input[type="password"] {
+    padding: 8px;
+    margin-bottom: 10px;
+  }
+
+  #login-form button {
+    padding: 6px 12px;
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+
+  /* Small login interface */
+  #login-form {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  #login-form h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  #login-form input[type="text"],
+  #login-form input[type="password"] {
+    width: 100%;
+  }
+</style>
+
+<!-- Rest of the code remains the same -->
+
+
+<!-- Rest of the code remains the same -->
+
+
+
+<br>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <center><a class="nav-link active" href="#">Lastest News Update</a></center>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div id="upload-news" style="display: none;">
+  <input type="file" id="news-upload" accept="image/*" multiple style="display: none;">
+  <button id="upload-button">Upload News</button>
+  <button id="delete-button" style="display: none;">Delete News</button>
+  <div id="upload-limit-message" style="display: none;"></div>
+</div>
+
+<div id="news-container" class="news-container"></div>
+
+<div id="delete-news" style="display: none;">
+  <label for="delete-select">Select News to Delete:</label>
+  <select id="delete-select"></select>
+  <button id="confirm-delete">Delete</button>
+</div>
+
+<script>
+  var uploadedNews = [];
+  var loggedIn = false;
+  var maxUploadLimit = 3;
+
+  function showLoginForm() {
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('upload-news').style.display = 'none';
+    document.getElementById('delete-button').style.display = 'none';
+    document.getElementById('delete-news').style.display = 'none';
+  }
+
+  function showUploadNews() {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('upload-news').style.display = 'block';
+  }
+
+  function showDeleteButton() {
+    document.getElementById('delete-button').style.display = 'inline-block';
+  }
+
+  function showDeleteNews() {
+    document.getElementById('delete-news').style.display = 'block';
+  }
+
+  document.getElementById('login-button').addEventListener('click', function() {
+    var username = document.getElementById('username-input').value;
+    var password = document.getElementById('password-input').value;
+
+    // Perform login validation here
+    if (username === 'Prasad Ks' && password === 'Nokia1234') {
+      loggedIn = true;
+      showUploadNews();
+    } else {
+      alert('Invalid credentials. Please try again.');
+    }
+  });
+
+  document.getElementById('upload-button').addEventListener('click', function() {
+    if (uploadedNews.length >= maxUploadLimit) {
+      document.getElementById('upload-limit-message').textContent = 'You cannot upload more than ' + maxUploadLimit + ' news.';
+      document.getElementById('upload-limit-message').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('news-upload').click();
+  });
+
+  document.getElementById('news-upload').addEventListener('change', function(event) {
+    var files = event.target.files;
+
+    var remainingUploads = maxUploadLimit - uploadedNews.length;
+    var uploadCount = Math.min(remainingUploads, files.length);
+
+    if (uploadCount === 0) {
+      return;
+    }
+
+    for (var i = 0; i < uploadCount; i++) {
+      var file = files[i];
+      var reader = new FileReader();
+
+      reader.onload = function(event) {
+        var newsContent = event.target.result;
+        createNewsElement(newsContent);
+        uploadedNews.push(newsContent);
+        saveUploadedNews();
+
+        if (uploadedNews.length === maxUploadLimit) {
+          document.getElementById('upload-button').style.display = 'none';
+          document.getElementById('upload-limit-message').textContent = 'You have reached the maximum upload limit of ' + maxUploadLimit + ' news.';
+          document.getElementById('upload-limit-message').style.display = 'block';
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    if (uploadedNews.length > 0) {
+      showDeleteButton();
+    }
+  });
+
+  document.getElementById('delete-button').addEventListener('click', function() {
+    showDeleteNews();
+    populateDeleteSelect();
+  });
+
+  document.getElementById('confirm-delete').addEventListener('click', function() {
+    var deleteSelect = document.getElementById('delete-select');
+    var selectedOptionIndex = deleteSelect.selectedIndex;
+    if (selectedOptionIndex !== -1) {
+      var deletedNewsContent = uploadedNews[selectedOptionIndex];
+      deleteNewsElement(deletedNewsContent);
+      uploadedNews.splice(selectedOptionIndex, 1);
+      saveUploadedNews();
+      deleteSelect.remove(selectedOptionIndex);
+
+      if (uploadedNews.length < maxUploadLimit) {
+        document.getElementById('upload-button').style.display = 'block';
+        document.getElementById('upload-limit-message').style.display = 'none';
+      }
+
+      if (uploadedNews.length === 0) {
+        document.getElementById('delete-button').style.display = 'none';
+        document.getElementById('delete-news').style.display = 'none';
+      }
+    }
+  });
+
+  function createNewsElement(newsContent) {
+    var newsContainer = document.getElementById('news-container');
+
+    var newsItem = document.createElement('div');
+    newsItem.className = 'news-item';
+
+    var newsImage = document.createElement('img');
+    newsImage.className = 'news-image';
+    newsImage.src = newsContent;
+
+    newsItem.appendChild(newsImage);
+
+    newsContainer.appendChild(newsItem);
+  }
+
+  function deleteNewsElement(newsContent) {
+    var newsContainer = document.getElementById('news-container');
+    var newsItems = newsContainer.getElementsByClassName('news-item');
+
+    for (var i = 0; i < newsItems.length; i++) {
+      var newsItem = newsItems[i];
+      var image = newsItem.getElementsByTagName('img')[0];
+
+      if (image.src === newsContent) {
+        newsContainer.removeChild(newsItem);
+        break;
+      }
+    }
+  }
+
+  function populateDeleteSelect() {
+    var deleteSelect = document.getElementById('delete-select');
+    deleteSelect.innerHTML = '';
+
+    for (var i = 0; i < uploadedNews.length; i++) {
+      var option = document.createElement('option');
+      option.value = i;
+      option.text = 'News ' + (i + 1);
+      deleteSelect.appendChild(option);
+    }
+  }
+
+  function saveUploadedNews() {
+    localStorage.setItem('uploadedNews', JSON.stringify(uploadedNews));
+  }
+
+  function loadUploadedNews() {
+    var storedNews = localStorage.getItem('uploadedNews');
+    if (storedNews) {
+      uploadedNews = JSON.parse(storedNews);
+      for (var i = 0; i < uploadedNews.length; i++) {
+        createNewsElement(uploadedNews[i]);
+      }
+      if (uploadedNews.length >= maxUploadLimit) {
+        document.getElementById('upload-button').style.display = 'none';
+        document.getElementById('upload-limit-message').textContent = 'You have reached the maximum upload limit of ' + maxUploadLimit + ' news.';
+        document.getElementById('upload-limit-message').style.display = 'block';
+      }
+      if (uploadedNews.length > 0) {
+        showDeleteButton();
+      }
+    }
+  }
+
+  // Check if the user is already logged in
+  if (loggedIn) {
+    showUploadNews();
+  } else {
+    showLoginForm();
+  }
+
+  loadUploadedNews();
+</script>
+<br>
+
+<!--Dashboard 1 , Real-time disk space usage from AP1 team-->
+
+<!-- Disk Utilization For Each Server-->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <center><a class="nav-link active" href="#">Disk Utilization</a></center>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.flip-card-container {
+  display: flex;
+  justify-content: space-between;
+  width: 900px; /* Adjust the width as needed */
+  margin: 40px auto 0; /* Centers the container horizontally and adds margin to the top */
+  flex-wrap: wrap; /* Allows cards to wrap to the next line */
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 150px; /* Adjust the card width as needed */
+  height: 150px; /* Adjust the card height as needed */
+  perspective: 1000px;
+  margin-bottom: 20px; /* Adjust the spacing between cards */
+  margin-right: 40px; /* Adjust the margin between cards */
+  flex-basis: calc(33.33% - 80px); /* Adjust the width of each card, considering margins */
+  box-sizing: border-box; /* Includes padding and border in the total width */
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
+}
+</style>
+
+<div class="flip-card-container">
+  <!-- Add flip-card elements for the top three cards -->
+  <div class="flip-card-container">
+  <div class="flip-card">
+    <h6>Disk Utilization For bhling119.apac.nsn-net.net</h6>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="6666.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+      </div>
+      <div class="flip-card-back">
+        <h1>John Doe 1</h1>
+        <p>Architect & Engineer</p>
+        <p>We love that guy</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="flip-card">
+    <h6>Disk Utilization For bhling118.apac.nsn-net.net</h6>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="6666.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+      </div>
+      <div class="flip-card-back">
+        <h1>John Doe 2</h1>
+        <p>Architect & Engineer</p>
+        <p>We love that guy</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="flip-card">
+    <h6>Disk Utilization For bhling103.apac.nsn-net.net</h6>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="6666.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+      </div>
+      <div class="flip-card-back">
+        <h1>John Doe 3</h1>
+        <p>Architect & Engineer</p>
+        <p>We love that guy</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flip-card-container">
+  <!-- Add flip-card elements for the bottom three cards -->
+  <div class="flip-card">
+    <h6>Disk Utilization For bhling105.apac.nsn-net.net</h6>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="6666.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+      </div>
+      <div class="flip-card-back">
+        <h1>John Doe 4</h1>
+        <p>Architect & Engineer</p>
+        <p>We love that guy</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="flip-card">
+    <h6>Disk Utilization For bhling106.apac.nsn-net.net</h6>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="6666.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+      </div>
+      <div class="flip-card-back">
+        <h1>John Doe 5</h1>
+        <p>Architect & Engineer</p>
+        <p>We love that guy</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="flip-card">
+    <h6>Disk Utilization For bhling49.apac.nsn-net.net</h6>
+    <div class="flip-card-inner">
+      <div class="flip-card-front">
+        <img src="6666.jpg" alt="Avatar" style="width: 100%; height: 100%;">
+      </div>
+      <div class="flip-card-back">
+        <h7>Disk Utilization For bhling49.apac.nsn-net.net</h7>
+        <p>Architect & Engineer</p>
+        <p>We love that guy</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<br>
+<br>
+<br>
+<!--Footer in Html Css with Nokia's branding copy right's issues-->
+
+<div class="mt-5 p-4 bg-dark text-white text-center">
+  <p><h6>©2023 Nokia all rights reserved</h6></p>
+</div>
+
+<!--Code END-->
+</body>
+</html>
+
